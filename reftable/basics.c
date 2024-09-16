@@ -39,6 +39,8 @@ void *reftable_calloc(size_t nelem, size_t elsize)
 {
 	size_t sz = st_mult(nelem, elsize);
 	void *p = reftable_malloc(sz);
+	if (!p)
+		return NULL;
 	memset(p, 0, sz);
 	return p;
 }
