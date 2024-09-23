@@ -1,0 +1,132 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Movie {
+    String title;
+    String genre;
+    double rating;
+    int year;
+
+    public Movie(String title, String genre, double rating, int year) {
+        this.title = title;
+        this.genre = genre;
+        this.rating = rating;
+        this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return title + " (" + year + ") - " + genre + " - Rating: " + rating;
+    }
+}
+
+class MovieDatabase {
+    private List<Movie> movies;
+
+    public MovieDatabase() {
+        movies = new ArrayList<>();
+        // Sample movies
+        movies.add(new Movie("Inception", "Sci-Fi", 8.8, 2010));
+        movies.add(new Movie("The Godfather", "Crime", 9.2, 1972));
+        movies.add(new Movie("Pulp Fiction", "Crime", 8.9, 1994));
+        movies.add(new Movie("The Dark Knight", "Action", 9.0, 2008));
+        movies.add(new Movie("Interstellar", "Sci-Fi", 8.6, 2014));
+    }
+
+    public List<Movie> filterByGenre(String genre) {
+        List<Movie> filteredMovies = new ArrayList<>();
+        for (Movie movie : movies) {
+            if (movie.genre.equalsIgnoreCase(genre)) {
+                filteredMovies.add(movie);
+            }
+        }
+        return filteredMovies;
+    }
+
+    public List<Movie> filterByRating(double minRating) {
+        List<Movie> filteredMovies = new ArrayList<>();
+        for (Movie movie : movies) {
+            if (movie.rating >= minRating) {
+                filteredMovies.add(movie);
+            }
+        }
+        return filteredMovies;
+    }
+
+    public List<Movie> filterByYear(int year) {
+        List<Movie> filteredMovies = new ArrayList<>();
+        for (Movie movie : movies) {
+            if (movie.year == year) {
+                filteredMovies.add(movie);
+            }
+        }
+        return filteredMovies;
+    }
+
+    public List<Movie> getAllMovies() {
+        return movies;
+    }
+}
+
+public class MovieRecommendationSystem {
+    public static void main(String[] args) {
+        MovieDatabase database = new MovieDatabase();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Welcome to the Movie Recommendation System!");
+            System.out.println("1. View all movies");
+            System.out.println("2. Filter by genre");
+            System.out.println("3. Filter by rating");
+            System.out.println("4. Filter by year");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.println("All Movies:");
+                    for (Movie movie : database.getAllMovies()) {
+                        System.out.println(movie);
+                    }
+                    break;
+                case 2:
+                    System.out.print("Enter genre: ");
+                    String genre = scanner.nextLine();
+                    List<Movie> genreMovies = database.filterByGenre(genre);
+                    System.out.println("Movies in genre " + genre + ":");
+                    for (Movie movie : genreMovies) {
+                        System.out.println(movie);
+                    }
+                    break;
+                case 3:
+                    System.out.print("Enter minimum rating: ");
+                    double rating = scanner.nextDouble();
+                    List<Movie> ratingMovies = database.filterByRating(rating);
+                    System.out.println("Movies with rating >= " + rating + ":");
+                    for (Movie movie : ratingMovies) {
+                        System.out.println(movie);
+                    }
+                    break;
+                case 4:
+                    System.out.print("Enter year: ");
+                    int year = scanner.nextInt();
+                    List<Movie> yearMovies = database.filterByYear(year);
+                    System.out.println("Movies from year " + year + ":");
+                    for (Movie movie : yearMovies) {
+                        System.out.println(movie);
+                    }
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+            System.out.println();
+        }
+    }
+}
